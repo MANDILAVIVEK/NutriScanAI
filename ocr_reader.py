@@ -19,9 +19,6 @@ else:
         "/usr/bin/tesseract"
     )
 
-# -----------------------------------
-# OCR FUNCTION
-# -----------------------------------
 
 def extract_text(image_path):
 
@@ -30,6 +27,9 @@ def extract_text(image_path):
 
     image = Image.open(image_path)
 
-    text = pytesseract.image_to_string(image)
+    text = pytesseract.image_to_string(
+        image,
+        config="--oem 3 --psm 6"
+    )
 
     return text

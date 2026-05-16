@@ -40,7 +40,10 @@ if scan_barcode is not None:
             barcode = scanned_barcode
             st.success(f"✅ Scanned Barcode: {barcode}")
 else:
-    st.info("📷 Camera barcode scanning is available only on local Windows. Use manual input or barcode image upload.")
+    st.info(
+        "📷 Camera barcode scanning is available only on local Windows. "
+        "Use manual input or barcode image upload."
+    )
 
 barcode = st.text_input("Enter Barcode", value=barcode)
 
@@ -134,7 +137,9 @@ if barcode:
         if None in [sugar, protein, carbs, salt]:
 
             st.warning("⚠ Nutrition information is missing for this product.")
-            st.info("📸 Please upload the product nutrition label image below for OCR analysis.")
+            st.info(
+                "📸 Please upload the product nutrition label image below for OCR analysis."
+            )
 
         else:
 
@@ -243,33 +248,44 @@ if uploaded_file is not None:
 
     if missing_values:
         st.warning("⚠ OCR could not read some nutrition values clearly.")
-        st.info("📸 Please upload a clearer cropped image of only the nutrition table.")
+        st.info(
+            "📸 Please upload a clearer cropped image of only the nutrition table."
+        )
+
+    # -------------------------------
+    # MANUAL CORRECTION FALLBACK
+    # -------------------------------
 
     st.subheader("✍️ Correct / Fill Nutrition Values")
 
     protein_input = st.text_input(
         "Protein (g)",
-        value="" if nutrition.get("protein") == "Not Found" else nutrition.get("protein", "")
+        value="" if nutrition.get("protein") == "Not Found" else nutrition.get("protein", ""),
+        placeholder="Example: 10.77"
     )
 
     carbs_input = st.text_input(
         "Carbohydrates (g)",
-        value="" if nutrition.get("carbs") == "Not Found" else nutrition.get("carbs", "")
+        value="" if nutrition.get("carbs") == "Not Found" else nutrition.get("carbs", ""),
+        placeholder="Example: 44.51"
     )
 
     sugar_input = st.text_input(
         "Sugar (g)",
-        value="" if nutrition.get("sugar") == "Not Found" else nutrition.get("sugar", "")
+        value="" if nutrition.get("sugar") == "Not Found" else nutrition.get("sugar", ""),
+        placeholder="Example: 2.79"
     )
 
     fat_input = st.text_input(
         "Fat (g)",
-        value="" if nutrition.get("fat") == "Not Found" else nutrition.get("fat", "")
+        value="" if nutrition.get("fat") == "Not Found" else nutrition.get("fat", ""),
+        placeholder="Example: 39.94"
     )
 
     sodium_input = st.text_input(
         "Sodium (mg)",
-        value="" if nutrition.get("sodium") == "Not Found" else nutrition.get("sodium", "")
+        value="" if nutrition.get("sodium") == "Not Found" else nutrition.get("sodium", ""),
+        placeholder="Example: 324.5"
     )
 
     if st.button("✅ Analyze Corrected Values"):
@@ -291,7 +307,12 @@ if uploaded_file is not None:
             st.subheader("📊 Corrected Nutrition Chart")
             st.bar_chart(corrected_df, x="Nutrient", y="Value")
 
-            result = analyze_nutrition(sugar, protein, carbs, salt)
+            result = analyze_nutrition(
+                sugar,
+                protein,
+                carbs,
+                salt
+            )
 
             st.subheader("🚦 Corrected Health Score")
 
